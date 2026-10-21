@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>Ringgit — Money Tracker</title>
+<style>
+:root{--bg:#0b1220;--panel:#121d2e;--panel2:#18263a;--text:#f3f6fb;--muted:#9eacc1;--line:#29374b;--green:#64e2a1;--red:#ff8585;--blue:#82b4ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#15243b 0%,var(--bg) 55%);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1050px;margin:auto;padding:24px 16px 50px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:24px}.brand{display:flex;align-items:center;gap:12px}.logo{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:var(--green);color:#062014;font-size:24px;font-weight:900}.brand h1{font-size:21px;margin:0;letter-spacing:.2px}.brand p{margin:2px 0 0;color:var(--muted);font-size:12px}.pill{border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:7px 11px;font-size:12px}
+h2{font-size:16px;margin:0 0 14px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{background:linear-gradient(145deg,rgba(24,38,58,.96),rgba(16,27,43,.96));border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 12px 28px #00000014}.label{color:var(--muted);font-size:13px}.amount{font-size:clamp(23px,4vw,31px);font-weight:750;letter-spacing:-.7px;margin-top:8px;overflow-wrap:anywhere}.green{color:var(--green)}.red{color:var(--red)}.blue{color:var(--blue)}.sub{color:var(--muted);font-size:12px;margin-top:6px}
+.layout{display:grid;grid-template-columns: minmax(0,1.15fr) minmax(290px,.85fr);gap:14px;margin-top:14px}.section{margin-top:14px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}input,select,button{font:inherit}input,select{width:100%;background:#0c1626;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px 12px;outline:none}input:focus,select:focus{border-color:var(--green)}.full{grid-column:1/-1}.btn{border:0;border-radius:11px;padding:12px 14px;font-weight:750;cursor:pointer}.primary{background:var(--green);color:#062014}.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}.danger{background:transparent;border:1px solid #75414b;color:#ffaaaa;padding:6px 9px;border-radius:8px;font-size:12px;cursor:pointer}.form-actions{display:flex;gap:8px;margin-top:12px}.form-actions button{flex:1}.barrow{display:grid;grid-template-columns:85px 1fr 75px;gap:9px;align-items:center;margin:13px 0;font-size:12px}.track{height:9px;border-radius:99px;background:#26364b;overflow:hidden}.fill{height:100%;border-radius:99px;background:var(--green)}.fill.expense{background:var(--red)}.barval{text-align:right;color:var(--muted)}.history-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.history-head select{width:auto;padding:7px 10px;font-size:12px}.transactions{display:flex;flex-direction:column;gap:9px}.tx{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.tx:last-child{border-bottom:0}.txicon{width:39px;height:39px;border-radius:12px;background:var(--panel2);display:grid;place-items:center;font-size:18px;flex-shrink:0}.txinfo{flex:1;min-width:0}.txinfo strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.txinfo small{color:var(--muted)}.txamount{font-weight:750;white-space:nowrap}.empty{padding:26px 8px;text-align:center;color:var(--muted)}.goalrow{display:flex;justify-content:space-between;gap:10px;align-items:center}.goalrow input{max-width:145px}.goaltrack{height:10px;background:#26364b;border-radius:99px;overflow:hidden;margin:14px 0 7px}.goalfill{height:100%;width:0;background:linear-gradient(90deg,var(--green),#b0ffd5);border-radius:99px}.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:22px}.notice{font-size:12px;color:var(--muted);margin-top:10px}.hidden{display:none!important}
+@media(max-width:740px){.grid{grid-template-columns:1fr}.layout{grid-template-columns:1fr}.wrap{padding:18px 12px 35px}.amount{font-size:27px}.top{align-items:flex-start}.pill{max-width:130px;text-align:center}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+ <div class="brand"><div class="logo">RM</div><div><h1>Ringgit</h1><p>Your personal money tracker</p></div></div>
+ <span class="pill">Private · Saved on this device</span>
+</header>
+<section class="grid">
+ <div class="card"><div class="label">Current balance</div><div class="amount" id="balance">RM 0.00</div><div class="sub">Income minus expenses</div></div>
+ <div class="card"><div class="label">Total income</div><div class="amount green" id="income">RM 0.00</div><div class="sub">Money received</div></div>
+ <div class="card"><div class="label">Total expenses</div><div class="amount red" id="expenses">RM 0.00</div><div class="sub">Money spent</div></div>
+</section>
+<div class="layout">
+ <section class="card">
+  <h2>Add a transaction</h2>
+  <form id="txForm">
+   <div class="formgrid">
+    <div><label for="type">Transaction type</label><select id="type"><option value="expense">Expense</option><option value="income">Income</option></select></div>
+    <div><label for="amount">Amount (RM)</label><input id="amount" type="number" min="0.01" step="0.01" placeholder="e.g. 12.50" required></div>
+    <div><label for="category">Category</label><select id="category"><option>Food</option><option>Transport</option><option>School</option><option>Shopping</option><option>Entertainment</option><option>Allowance</option><option>Salary / business</option><option>Savings</option><option>Other</option></select></div>
+    <div><label for="date">Date</label><input id="date" type="date" required></div>
+    <div class="full"><label for="note">Note (optional)</label><input id="note" maxlength="80" placeholder="e.g. Lunch with friends"></div>
+   </div>
+   <div class="form-actions"><button class="btn primary" type="submit">+ Add transaction</button><button class="btn secondary" type="reset" id="resetForm">Clear</button></div>
+  </form>
+  <p class="notice">Your entries stay in this browser on this device. Export a backup regularly.</p>
+ </section>
+ <section class="card">
+  <h2>Savings goal</h2>
+  <div class="goalrow"><div><div class="label">Goal name</div><input id="goalName" maxlength="35" value="My first RM1,000"></div><div><div class="label">Target (RM)</div><input id="goalTarget" type="number" min="1" step="1" value="1000"></div></div>
+  <div class="amount" id="goalSaved">RM 0.00</div><div class="label" id="goalCaption">Saved toward your goal</div>
+  <div class="goaltrack"><div class="goalfill" id="goalFill"></div></div>
+  <div class="goalrow"><span class="sub" id="goalPercent">0% complete</span><span class="sub" id="goalLeft">RM 1,000.00 to go</span></div>
+  <div class="section"><h2>Income vs expenses</h2><div class="barrow"><span>Income</span><div class="track"><div class="fill" id="incomeBar"></div></div><span class="barval" id="incomeBarText">RM 0</span></div><div class="barrow"><span>Expenses</span><div class="track"><div class="fill expense" id="expenseBar"></div></div><span class="barval" id="expenseBarText">RM 0</span></div></div>
+ </section>
+</div>
+<section class="card section">
+ <div class="history-head"><h2>Transaction history</h2><select id="filter"><option value="all">All transactions</option><option value="income">Income only</option><option value="expense">Expenses only</option></select></div>
+ <div id="transactions" class="transactions"><div class="empty">No transactions yet. Add your first one above.</div></div>
+ <div class="form-actions"><button class="btn secondary" id="exportBtn" type="button">Export backup (CSV)</button><button class="btn secondary" id="backupBtn" type="button">Download data backup</button><button class="btn secondary" id="importBtn" type="button">Import backup</button><input class="hidden" id="importFile" type="file" accept=".json,application/json"></div>
+ <div class="form-actions"><button class="btn secondary" id="installHelp" type="button">How to install as an app</button><button class="btn danger" id="clearAll" type="button">Delete all data</button></div>
+</section>
+<div class="foot">Ringgit Money Tracker · Made for simple personal budgeting · Not connected to your bank</div>
+</div>
+<script>
+(() => {
+ const $ = id => document.getElementById(id);
+ const KEY='ringgit-money-tracker-v1';
+ let state={transactions:[],goalName:'My first RM1,000',goalTarget:1000};
+ const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+ $('date').value=today();
+ const money=n=>'RM '+Number(n||0).toLocaleString('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2});
+ function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){alert('Could not save data in this browser. Please export a backup.')}} 
+ function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&Array.isArray(s.transactions))state={...state,...s}}catch(e){}}
+ function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+ function render(){
+  const income=state.transactions.filter(t=>t.type==='income').reduce((a,t)=>a+t.amount,0);
+  const expenses=state.transactions.filter(t=>t.type==='expense').reduce((a,t)=>a+t.amount,0);
+  const balance=income-expenses;
+  $('balance').textContent=money(balance);$('balance').className='amount '+(balance<0?'red':'');
+  $('income').textContent=money(income);$('expenses').textContent=money(expenses);
+  $('goalName').value=state.goalName;$('goalTarget').value=state.goalTarget;
+  $('goalSaved').textContent=money(Math.max(0,balance));$('goalCaption').textContent=state.goalName||'Savings goal';
+  const target=Math.max(1,Number(state.goalTarget)||1),pct=Math.min(100,Math.max(0,balance)/target*100);
+  $('goalFill').style.width=pct+'%';$('goalPercent').textContent=Math.floor(pct)+'% complete';$('goalLeft').textContent=money(Math.max(0,target-Math.max(0,balance)))+' to go';
+  const max=Math.max(income,expenses,1);$('incomeBar').style.width=(income/max*100)+'%';$('expenseBar').style.width=(expenses/max*100)+'%';$('incomeBarText').textContent=money(income);$('expenseBarText').textContent=money(expenses);
+  const f=$('filter').value;const txs=[...state.transactions].filter(t=>f==='all'||t.type===f).sort((a,b)=>b.date.localeCompare(a.date)||b.created-b.created);
+  if(!txs.length){$('transactions').innerHTML='<div class="empty">No transactions here yet.</div>';return}
+  const icons={Food:'🍜',Transport:'🚌',School:'📚',Shopping:'🛍️',Entertainment:'🎮',Allowance:'💵','Salary / business':'💼',Savings:'🐷',Other:'🧾'};
+  $('transactions').innerHTML=txs.map(t=>`<div class="tx"><div class="txicon">${icons[t.category]||'🧾'}</div><div class="txinfo"><strong>${esc(t.note||t.category)}</strong><small>${esc(t.category)} · ${esc(t.date)}</small></div><div class="txamount ${t.type==='income'?'green':'red'}">${t.type==='income'?'+':'−'}${money(t.amount)}</div><button class="danger" data-delete="${esc(t.id)}" aria-label="Delete transaction">Delete</button></div>`).join('');
+ }
+ $('txForm').addEventListener('submit',e=>{e.preventDefault();const amount=Number($('amount').value);if(!Number.isFinite(amount)||amount<=0){alert('Enter an amount greater than RM0.');return}state.transactions.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random()),type:$('type').value,amount:Math.round(amount*100)/100,category:$('category').value,date:$('date').value||today(),note:$('note').value.trim(),created:Date.now()});save();render();$('txForm').reset();$('date').value=today();$('type').value='expense';});
+ $('transactions').addEventListener('click',e=>{const b=e.target.closest('[data-delete]');if(!b)return;if(confirm('Delete this transaction?')){state.transactions=state.transactions.filter(t=>t.id!==b.dataset.delete);save();render()}});
+ $('filter').addEventListener('change',render);
+ $('goalName').addEventListener('change',()=>{state.goalName=$('goalName').value.trim()||'Savings goal';save();render()});
+ $('goalTarget').addEventListener('change',()=>{state.goalTarget=Math.max(1,Number($('goalTarget').value)||1);save();render()});
+ function download(name,content,type){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+ $('exportBtn').onclick=()=>{const rows=[['Date','Type','Category','Amount_RM','Note'],...state.transactions.map(t=>[t.date,t.type,t.category,t.amount,t.note])];const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');download('ringgit-transactions.csv','\ufeff'+csv,'text/csv;charset=utf-8')};
+ $('backupBtn').onclick=()=>download('ringgit-backup.json',JSON.stringify(state,null,2),'application/json');
+ $('importBtn').onclick=()=>$('importFile').click();
+ $('importFile').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text());if(!data||!Array.isArray(data.transactions))throw Error();if(confirm('Import this backup? Current data will be replaced.')){state={transactions:data.transactions.filter(t=>Number.isFinite(Number(t.amount))&&Number(t.amount)>0).map(t=>({...t,amount:Number(t.amount)})),goalName:String(data.goalName||'My savings goal'),goalTarget:Math.max(1,Number(data.goalTarget)||1000)};save();render();alert('Backup imported.')}}catch(err){alert('That file does not look like a valid Ringgit backup.')}e.target.value=''};
+ $('clearAll').onclick=()=>{if(confirm('Delete every transaction and reset your goal? Export a backup first if you want to keep your records.')){state={transactions:[],goalName:'My first RM1,000',goalTarget:1000};save();render()}};
+ $('installHelp').onclick=()=>alert('To keep this app handy:\\n\\nWindows / Chrome: open the app file in Chrome, then use the browser menu → Cast, save, and share (or More tools) → Create shortcut, if available.\\n\\nAndroid: put the app on a website with HTTPS, open it in Chrome, then menu → Add to Home screen.\\n\\niPhone: open the hosted app in Safari → Share → Add to Home Screen.\\n\\nThe downloaded HTML file works offline, but browser storage is tied to that browser/device. Export backups regularly.');
+ if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{})); }
+ load();render();
+})();
+</script>
+</body>
+</html>
